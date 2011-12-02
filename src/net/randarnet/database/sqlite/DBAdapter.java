@@ -58,6 +58,14 @@ public class DBAdapter
             db.execSQL("DROP TABLE IF EXISTS recipes");
             onCreate(db);
         }
+        public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion)
+        {
+        	Log.w(TAG, "Downgrading database from version " + oldVersion 
+                    + " to "
+                    + newVersion + ", which will destroy all old data");
+            db.execSQL("DROP TABLE IF EXISTS recipes");
+            onCreate(db);
+        }
     }
     public void upDateVersion(){
     	++DATABASE_VERSION;

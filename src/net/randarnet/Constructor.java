@@ -7,8 +7,10 @@ import net.randarnet.util.ThemeOfTheDay;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,17 +38,23 @@ public class Constructor extends Activity {
         FindDate.setDate();
         ThemeOfTheDay.setTheme();
         /*********************************/
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(BetaAlertDialog.getDialog())
-			.setCancelable(false)
-			.setPositiveButton("Agree", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					dialog.cancel();
-				}
-			});
-		AlertDialog alert = builder.create();
-		alert.setTitle("Drink of the Day End User License Agreement");
-		alert.show();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        	if(prefs.getBoolean("firstTime", false)) {
+        		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        		builder.setMessage(BetaAlertDialog.getDialog())
+        			.setCancelable(false)
+        			.setPositiveButton("Agree", new DialogInterface.OnClickListener() {
+        				public void onClick(DialogInterface dialog, int id) {
+        					dialog.cancel();
+        				}
+        			});
+        		AlertDialog alert = builder.create();
+        		alert.setTitle("Drink of the Day End User License Agreement");
+        		alert.show();
+        	    SharedPreferences.Editor editor = prefs.edit();
+        	    editor.putBoolean("firstTime", true);
+        	    editor.commit();
+        	}
 		/**********************************/
 		setContentView(com.randarlabs.android.R.layout.main);
         if(database == null)

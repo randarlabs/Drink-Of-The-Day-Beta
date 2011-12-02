@@ -3,4 +3,5 @@
     <string name="main_screen">Hello World, Constructor!</string>
     <string name="app_name">Drink of the Day</string>
     <string name="admob_ID">a14e1ac6db4322e</string>
+    <string name="splash_screen">Drink of the Day ©2010 Randar Labs, LLC</string>
 </resources>
