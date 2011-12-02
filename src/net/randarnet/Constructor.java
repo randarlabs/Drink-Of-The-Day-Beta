@@ -12,31 +12,33 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class Constructor extends Activity {
     /****************************************************/
 	//This sets up all the strings to be passed to the TextView.setText()
 	//This is pretty much the poor man's UI
 	//REQUIRMENTS: All must be able to be converted to a String
-    public void setString(DBAdapter db){
+    public static void setString(DBAdapter db){
     	s = FindDate.getDate() + 
     	"\nTheme of the day: " + ThemeOfTheDay.getTheme() +
-		"\nDrink of the day: " + getRecipe(1, db) +
-		"\n\n\nTODO:" +
-		"\n1. Build database(s) - 90% Complete" +
-		"\n2. Add drinks to database(s)" +
-		"\n3. Choose radom drink based on theme of the day" +
-		"\n4. Create UI" +
-		"\n5. Add AdMob" +
-		"\n6. Make a widget";
+		"\nDrink of the day: " + getRecipe(1, db);
     }
     /****************************************************/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setContentView(com.randarlabs.android.R.layout.main);
         FindDate.setDate();
         ThemeOfTheDay.setTheme();
+        if(database == null)
+        	database = new DBAdapter(this);
+        else
+        	database.upDateVersion();
+        DatabasePicker.setDrinkDatabase(database);
+        //TextView tv = new TextView(this);
+        TextView tv = (TextView)findViewById(com.randarlabs.android.R.id.TV_drink);
+        tv.setText(getString(database));
+        database.close();
         /*********************************/
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         	if(prefs.getBoolean("firstTime", false)) {
@@ -56,17 +58,6 @@ public class Constructor extends Activity {
         	    editor.commit();
         	}
 		/**********************************/
-		setContentView(com.randarlabs.android.R.layout.main);
-        if(database == null)
-        	database = new DBAdapter(this);
-        else
-        	database.upDateVersion();
-        DatabasePicker.setDrinkDatabase(database);
-        //TextView tv = new TextView(this);
-        TextView tv = (TextView)findViewById(com.randarlabs.android.R.id.TV_drink);
-        tv.setText(getString(database));
-        
-        database.close();
     }
     /****************************************************
     public void onRestart() {
@@ -112,16 +103,16 @@ public class Constructor extends Activity {
     	super.onDestroy();
     	return;
     }
-    public String getString(DBAdapter X){
+    public static String getString(DBAdapter X){
     	setString(X);
     	return s;
     }
     /****************************************************/
-    private String s;
-    private final String error = "ERROR";
+    private static String s;
+    private final static String error = "ERROR";
     DBAdapter database;
     /****************************************************/
-    public String getRecipe(long db_id, DBAdapter db){
+    public static String getRecipe(long db_id, DBAdapter db){
     	db.open();
         Cursor c = db.getRecipe(db_id);
         if (c.moveToFirst()){        
@@ -133,7 +124,7 @@ public class Constructor extends Activity {
         else {
         	c.close();
         	db.close();
-            Toast.makeText(this, "ERROR: No recipe found", Toast.LENGTH_LONG).show();
+           // Toast.makeText(, "ERROR: No recipe found", Toast.LENGTH_LONG).show();
             return error;
         }
     }

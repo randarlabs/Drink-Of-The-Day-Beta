@@ -6,10 +6,11 @@
               android:layout_height="fill_parent">
   <TextView  
     android:id="@+id/TV_drink" 
-    android:label="main_screen_drinks"
+    android:text="@string/main_screen"
     android:layout_height="wrap_content" 
     android:layout_width="match_parent"
     android:layout_weight="0.98"
+    android:textAppearance="?android:attr/textAppearanceMedium"
     />
   <com.google.ads.AdView android:id="@+id/adView"
                          android:layout_width="wrap_content"
