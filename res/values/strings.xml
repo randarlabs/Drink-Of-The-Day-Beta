@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_screen">Hello World, Constructor!</string>
+    <string name="app_name">Drink of the Day</string>
+    <string name="admob_ID">a14e1ac6db4322e</string>
+</resources>
