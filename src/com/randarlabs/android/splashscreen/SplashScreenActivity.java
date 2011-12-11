@@ -1,15 +1,23 @@
 package com.randarlabs.android.splashscreen;
 
+import com.randarlabs.Constructor;
+import com.randarlabs.database.sqlite.DBAdapter;
+import com.randarlabs.database.sqlite.DatabasePicker;
+import com.randarlabs.util.FindDate;
+import com.randarlabs.util.ThemeOfTheDay;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.TextView;
 
 public class SplashScreenActivity extends Activity {
 	/**
 	 * Simple Dialog used to show the splash screen
 	 */
 	protected Dialog mSplashDialog;
+	DBAdapter database;
 	 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -22,12 +30,43 @@ public class SplashScreenActivity extends Activity {
 	            showSplashScreen();
 	        }
 	        setContentView(com.randarlabs.android.R.layout.main);        
-	 
 	        // Rebuild your UI with your saved state here
+	        FindDate.setDate();
+	        ThemeOfTheDay.setTheme();
+	        if(database == null)
+	        	database = new DBAdapter(this);
+	        else
+	        	database.upDateVersion();
+	        DatabasePicker.setDrinkDatabase(database);
+	        TextView tvThemeTitle = (TextView)findViewById(com.randarlabs.android.R.id.TV_themeTitle);
+	        tvThemeTitle.setText(ThemeOfTheDay.getTheme());
+	        TextView tvDrinkTitle = (TextView)findViewById(com.randarlabs.android.R.id.TV_DrinkName);
+	        tvDrinkTitle.setText(Constructor.getDrinkName(1, database));
+	        TextView tvDrinkRecipe = (TextView)findViewById(com.randarlabs.android.R.id.TV_DrinkRecipe);
+	        tvDrinkRecipe.setText(Constructor.getDrinkRecipe(1, database));
+	        TextView tvDrinkDirections = (TextView)findViewById(com.randarlabs.android.R.id.TV_DrinkDirections);
+	        tvDrinkDirections.setText(Constructor.getDrinkDirections(1, database));
+	        database.close();
 	    } else {
 	        showSplashScreen();
 	        setContentView(com.randarlabs.android.R.layout.main);
 	        // Do your heavy loading here on a background thread
+	        FindDate.setDate();
+	        ThemeOfTheDay.setTheme();
+	        if(database == null)
+	        	database = new DBAdapter(this);
+	        else
+	        	database.upDateVersion();
+	        DatabasePicker.setDrinkDatabase(database);
+	        TextView tvThemeTitle = (TextView)findViewById(com.randarlabs.android.R.id.TV_themeTitle);
+	        tvThemeTitle.setText(ThemeOfTheDay.getTheme());
+	        TextView tvDrinkTitle = (TextView)findViewById(com.randarlabs.android.R.id.TV_DrinkName);
+	        tvDrinkTitle.setText(Constructor.getDrinkName(1, database));
+	        TextView tvDrinkRecipe = (TextView)findViewById(com.randarlabs.android.R.id.TV_DrinkRecipe);
+	        tvDrinkRecipe.setText(Constructor.getDrinkRecipe(1, database));
+	        TextView tvDrinkDirections = (TextView)findViewById(com.randarlabs.android.R.id.TV_DrinkDirections);
+	        tvDrinkDirections.setText(Constructor.getDrinkDirections(1, database));
+	        database.close();
 	    }
 	}
 	 
